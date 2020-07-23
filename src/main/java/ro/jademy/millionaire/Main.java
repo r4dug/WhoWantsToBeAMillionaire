@@ -29,13 +29,12 @@ public class Main {
         //initialize game
         Game game = new Game(difficultyZeroQuestion, difficultyOneQuestion, difficultyTwoQuestion, difficultyThreeQuestion);
 
-        // TODO:
         //start game
         //game.start();
     }
 
     private static List<Question> getRandomQuestions(int nrOfQuestions, int difficulty) {
-        //TODO:
+
         //loop through all questions
         //get all questions of given difficulty
         //loop through sub-list until nrOfQuestions and select random items by index
@@ -59,5 +58,30 @@ public class Main {
         }
 
         return randomQuestions;
+    }
+
+    public void start() {
+
+        //TODO:
+        //show welcome screen
+        //optionally : show rules (rounds, lifelines, etc)
+        //show current level question
+        //read command from player
+        // - if lifeline -> apply lifeline
+        // - if end game -> take current money and walk away
+        // - read answer -> check answer
+        //        -if answer correct -> go to next level (set next level as current, set amount of money etc.
+        //        -if answer incorrect -> end game (calculate end game sum, show bye-bye message etc.)
+
+
+        showWelcomeScreen();
+        showRules();
+
+    }
+
+    private void showRules() {
+    }
+
+    private void showWelcomeScreen() {
     }
 }
