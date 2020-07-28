@@ -1,10 +1,13 @@
 package ro.jademy.millionaire;
 
 import ro.jademy.millionaire.data.QuestionProvider;
+import ro.jademy.millionaire.model.Answer;
 import ro.jademy.millionaire.model.Game;
 import ro.jademy.millionaire.model.Question;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -27,12 +30,15 @@ public class Main {
         List<Question> difficultyThreeQuestion = getRandomQuestions(1, 3);
 
         //initialize game
-        Game game = new Game(difficultyZeroQuestion, difficultyOneQuestion, difficultyTwoQuestion, difficultyThreeQuestion);
+       // Game game = new Game(difficultyZeroQuestion, difficultyOneQuestion, difficultyTwoQuestion, difficultyThreeQuestion);
 
         //start game
-        //game.start();
-    }
 
+        Game game = new Game(difficultyZeroQuestion, difficultyOneQuestion, difficultyTwoQuestion, difficultyThreeQuestion);
+
+        game.showWelcomeScreen();
+
+        }
     private static List<Question> getRandomQuestions(int nrOfQuestions, int difficulty) {
 
         //loop through all questions
@@ -40,48 +46,21 @@ public class Main {
         //loop through sub-list until nrOfQuestions and select random items by index
         //return list
 
-        List<Question> questionsDiff = new ArrayList<>();
-        List<Question> randomQuestions = new ArrayList<>();
+        List<Question> questionsOfDiff = new ArrayList<>();
+        List<Question> questionsRandom = new ArrayList<>();
 
         for (Question question : QuestionProvider.ALL_QUESTIONS) {
             if (question.getDifficulty() == difficulty) {
-                questionsDiff.add(question);
+                questionsOfDiff.add(question);
             }
         }
-
         Random random = new Random();
-
         for (int i = 0; i < nrOfQuestions; i++) {
-
-            int randomIndex = random.nextInt(questionsDiff.size());
-            randomQuestions.add(questionsDiff.remove(randomIndex));
+            int randomIndex = random.nextInt(questionsOfDiff.size());
+            questionsRandom.add(questionsOfDiff.remove(randomIndex));
         }
-
-        return randomQuestions;
+        return questionsRandom;
     }
 
-    public void start() {
-
-        //TODO:
-        //show welcome screen
-        //optionally : show rules (rounds, lifelines, etc)
-        //show current level question
-        //read command from player
-        // - if lifeline -> apply lifeline
-        // - if end game -> take current money and walk away
-        // - read answer -> check answer
-        //        -if answer correct -> go to next level (set next level as current, set amount of money etc.
-        //        -if answer incorrect -> end game (calculate end game sum, show bye-bye message etc.)
-
-
-        showWelcomeScreen();
-        showRules();
 
     }
-
-    private void showRules() {
-    }
-
-    private void showWelcomeScreen() {
-    }
-}

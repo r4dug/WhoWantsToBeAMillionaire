@@ -2,8 +2,6 @@ package ro.jademy.millionaire.data;
 
 import ro.jademy.millionaire.model.Answer;
 import ro.jademy.millionaire.model.Question;
-
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
