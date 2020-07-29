@@ -54,12 +54,12 @@ public class QuestionProvider {
                     new Answer("Omega")),
 
                     new Answer("Alpha"), 0),
-            new Question("Question 1?", Arrays.asList(
-                    new Answer("one"),
-                    new Answer("two"),
-                    new Answer("three")),
+            new Question("In the opera by Rossini, what is the first name of 'The Barber of Seville'?", Arrays.asList(
+                    new Answer("Tamino"),
+                    new Answer("Don Carlos"),
+                    new Answer("Alfredo")),
 
-                    new Answer("four"), 1),
+                    new Answer("Figaro"), 1),
             new Question("Globophobia is a fear of?", Arrays.asList(
                     new Answer("Lollipops"),
                     new Answer("Water"),

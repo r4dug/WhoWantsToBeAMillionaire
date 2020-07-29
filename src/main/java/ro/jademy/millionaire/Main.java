@@ -32,7 +32,7 @@ public class Main {
         Game game = new Game(difficultyZeroQuestion, difficultyOneQuestion, difficultyTwoQuestion, difficultyThreeQuestion);
 
         //start game
-        game.showWelcomeScreen();
+        game.startGameMenu();
 
     }
 }
