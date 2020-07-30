@@ -29,19 +29,17 @@ public class Game {
             new Level(12, 2, 125000, 32000),
             new Level(13, 2, 250000, 32000),
             new Level(14, 2, 500000, 32000),
-            new Level(15, 3, 1000000, 500000)
+            new Level(15, 3, 1000000, 500000),
+            new Level(16, 3, 1000000, 500000)
     );
 
     private List<Question> difficultyZeroQuestions = new ArrayList<>();
     private List<Question> difficultyOneQuestions = new ArrayList<>();
     private List<Question> difficultyTwoQuestions = new ArrayList<>();
     private List<Question> difficultyThreeQuestions = new ArrayList<>();
-
+    private List<Lifeline> lifelines = new ArrayList<Lifeline>();
     private int levelIndex = 0;
     private Level currentLevel = LEVELS.get(levelIndex); //reference to Level object
-
-    private List<Lifeline> lifelines = new ArrayList<Lifeline>();
-
     private Scanner sc = new Scanner(System.in);
 
 
@@ -52,14 +50,16 @@ public class Game {
         this.difficultyThreeQuestions = difficultyThreeQuestions;
 
         lifelines.add(new Lifeline("50-50"));
-        lifelines.add(new Lifeline("AskAudience"));
-        lifelines.add(new Lifeline("CallAFriend"));
+        lifelines.add(new Lifeline("50-50"));
+        lifelines.add(new Lifeline("50-50"));
+        // lifelines.add(new Lifeline("AskAudience"));
+      //  lifelines.add(new Lifeline("CallAFriend"));
 
     }
     // questions will be different at every game instance
 
     public void startGameMenu() {
-
+        //first pop-up menu for the player
         System.out.println("\n\n\t*** Who wants to be a millionaire? ***");
         System.out.println("1.Play the game");
         System.out.println("2.Rules");
@@ -104,7 +104,6 @@ public class Game {
 
     public void start() {
 
-        //TODO:
         //show welcome screen
         //optionally : show rules (rounds, lifelines, etc)
         //show current level question
@@ -115,54 +114,65 @@ public class Game {
         //        -if answer correct -> go to next level (set next level as current, set amount of money etc.
         //        -if answer incorrect -> end game (calculate end game sum, show bye-bye message etc.)
 
+        boolean gameWorking = true;
         do {
             showQuestion();
+            if (currentLevel.getNumber() == 16) {
+                gameWon();
+                gameWorking = false;
+
+            }
         }
-        while (currentLevel.getNumber()<15);
+        while (gameWorking);
     }
 
     private void showQuestion() {
         Question question;
         List<Answer> allAnswers;
 
-            switch (currentLevel.getDifficultyLevel()) {
-                case 0:
-                    question = difficultyZeroQuestions.get(0);
-                    allAnswers = printQuestion(question);
-                    System.out.println();
-                    System.out.println("Press L for Lifeline / W for Walkaway");
-                   userAnswer(allAnswers,difficultyZeroQuestions);
-                   currentLevel=LEVELS.get(++levelIndex);
-                //applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
-                    break;
-                case 1:
-                    question = difficultyOneQuestions.get(0);
-                    allAnswers = printQuestion(question);
-                    System.out.println();
-                    System.out.println("Press L for Lifeline / W for Walkaway");
-                    userAnswer(allAnswers,difficultyOneQuestions);
-                    // applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
-                    break;
-                case 2:
-                    question = difficultyTwoQuestions.get(0);
-                    allAnswers = printQuestion(question);
-                    System.out.println();
-                    System.out.println("Press L for Lifeline / W for Walkaway");
-                    userAnswer(allAnswers,difficultyTwoQuestions);
-                    //applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
-                    break;
-                case 3:
-                    question = difficultyThreeQuestions.get(levelIndex);
-                    allAnswers = printQuestion(question);
-                    System.out.println();
-                    System.out.println("Press L for Lifeline / W for Walkaway");
-                    userAnswer(allAnswers,difficultyThreeQuestions);
-                    //applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
-                    break;
-                default:
-                    System.out.println("Unknown difficulty level");
-                    break;
-            }
+        switch (currentLevel.getDifficultyLevel()) {
+            case 0:
+                System.out.println("Question number " + currentLevel.getNumber() + " for " + currentLevel.getReward() + "$");
+                question = difficultyZeroQuestions.get(0);
+                allAnswers = printQuestion(question);
+                System.out.println();
+                System.out.println("Press L for Lifeline / W for Walkaway");
+                userAnswer(allAnswers, difficultyZeroQuestions);
+                break;
+
+            case 1:
+                System.out.println("Question number " + currentLevel.getNumber() + " for " + currentLevel.getReward() + "$");
+                question = difficultyOneQuestions.get(0);
+                allAnswers = printQuestion(question);
+                System.out.println();
+                System.out.println("Press L for Lifeline / W for Walkaway");
+                userAnswer(allAnswers, difficultyOneQuestions);
+                break;
+
+            case 2:
+                System.out.println("Question number " + currentLevel.getNumber() + " for " + currentLevel.getReward() + "$");
+                question = difficultyTwoQuestions.get(0);
+                allAnswers = printQuestion(question);
+                System.out.println();
+                System.out.println("Press L for Lifeline / W for Walkaway");
+                userAnswer(allAnswers, difficultyTwoQuestions);
+                break;
+
+            case 3:
+                System.out.println("Question number " + currentLevel.getNumber() + " for " + currentLevel.getReward() + "$");
+                question = difficultyThreeQuestions.get(0);
+                allAnswers = printQuestion(question);
+                System.out.println();
+                System.out.println("Press L for Lifeline / W for Walkaway");
+                userAnswer(allAnswers, difficultyThreeQuestions);
+                break;
+
+            default:
+                System.out.println("Unknown difficulty level");
+                break;
+        }
+
+        currentLevel = LEVELS.get(++levelIndex);
 
     }
 
@@ -205,44 +215,7 @@ public class Game {
         lifeline.setUsed(true);
     }
 
-    public boolean userAnswer ( List<Answer> allAnswers, List<Question> questionList) {
-
-        boolean isCorrectAnswer=false;
-        String userChoice= sc.nextLine();
-        switch (userChoice) {
-
-            case "A":
-                isCorrectAnswer = verifyCorrectAnswer(0, allAnswers, questionList);
-                break;
-            case "B":
-                isCorrectAnswer = verifyCorrectAnswer(1, allAnswers, questionList );
-                break;
-            case "C":
-                isCorrectAnswer = verifyCorrectAnswer(2, allAnswers, questionList );
-                break;
-            case "D":
-                isCorrectAnswer = verifyCorrectAnswer(3, allAnswers, questionList);
-                break;
-
-/*            case "L":
-                applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
-                break;*/
-            case "W":
-                System.out.println("Reward: " + currentLevel.getReward());
-                isCorrectAnswer=false;
-                break;
-
-            default:
-                System.out.println("Input not recognized. Please enter a valid input!");
-
-
-        }
-
-        return isCorrectAnswer;
-    }
-
-
-    private boolean verifyCorrectAnswer(int index, List<Answer> allAnswers, List<Question> questionList) {
+    private void verifyCorrectAnswer(int index, List<Answer> allAnswers, List<Question> questionList) {
         boolean isCorrectAnswer;
         if (allAnswers.get(index).getText().equals
                 (questionList.get(0).getCorrectAnswer().getText())) {
@@ -255,19 +228,47 @@ public class Game {
             isCorrectAnswer = false;
             System.exit(0);
         }
-        return isCorrectAnswer;
+//        return isCorrectAnswer;
     }
 
-    private boolean answerQuestion(List<Question> questionList, List<Answer> allAnswers) {
-        boolean isCorrectAnswer;
+    private void userAnswer(List<Answer> allAnswers, List<Question> questionList) {
 
-        isCorrectAnswer = userAnswer(allAnswers, questionList);
-        return isCorrectAnswer;
+        String userInput = sc.nextLine();
+
+        if (userInput.equalsIgnoreCase("A")) {
+            verifyCorrectAnswer(0, allAnswers, questionList);
+        } else if (userInput.equalsIgnoreCase("B")) {
+            verifyCorrectAnswer(1, allAnswers, questionList);
+        } else if (userInput.equalsIgnoreCase("C")) {
+            verifyCorrectAnswer(2, allAnswers, questionList);
+        } else if (userInput.equalsIgnoreCase("D")) {
+            verifyCorrectAnswer(3, allAnswers, questionList);
+        } else if (userInput.equalsIgnoreCase("L")) {
+            showLifeline(questionList, allAnswers);
+            userAnswer(allAnswers, questionList);
+        } else if (userInput.equalsIgnoreCase("W")) {
+            currentLevel = LEVELS.get(levelIndex - 1);
+            System.out.println("You choose to walkaway. Reward: " + currentLevel.getReward());
+            System.exit(0);
+
+        } else {
+            System.out.println("Wrong input. Please use A/B/C/D for answers, L for lifelines or W for walkaway");
+            System.exit(0);
+        }
+
     }
 
+    private void showLifeline(List<Question> allDifficultyLevelQuestions, List<Answer> allAnswers) {
+        Question question;
+        question = allDifficultyLevelQuestions.get(0);
+        applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
+        lifelines.remove(0);
+        System.out.println("You have now " + lifelines.size() + " lifelines remaining!");
 
+    }
 
-    public void endGame(Answer playerInput) {
-
+    private void gameWon() {
+        System.out.println("\n\t*** Congratulations! ***");
+        System.out.println("*** You have won 1 000 000 $! ***");
     }
 }
